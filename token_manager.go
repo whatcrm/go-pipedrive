@@ -13,11 +13,38 @@ import (
 )
 
 func (c *Client) GetAccessToken(ctx context.Context, authorizationCode string) (*models.TokenResponse, error) {
-	authHeaderValue := "Basic " + base64.StdEncoding.EncodeToString([]byte(c.ClientID+":"+c.ClientSecret))
+	authHeaderValue := "Basic " + base64.StdEncoding.EncodeToString([]byte(c.ClientID + ":" + c.ClientSecret))
 
 	data := url.Values{}
 	data.Set("grant_type", utils.AccessTokenGrantTypeString)
 	data.Set("code", authorizationCode)
+	data.Set("redirect_uri", c.RedirectURI)
+
+	req, err := http.NewRequest("POST", utils.TokenEndPoint, strings.NewReader(data.Encode()))
+	if err != nil {
+		return &models.TokenResponse{}, err
+	}
+
+	req.Header.Set("Authorization", authHeaderValue)
+
+	response := &models.TokenResponse{}
+
+	err = c.Send(req, response)
+
+	if response.AccessToken != "" {
+		c.Token = response
+		c.tokenExpiresAt = time.Now().Add(time.Duration(response.ExpiresIn) * time.Second)
+	}
+	
+	return response, err
+}
+
+func (c *Client) RefreshToken(ctx context.Context, refreshToken string) (*models.TokenResponse, error) {
+	authHeaderValue := "Basic " + base64.StdEncoding.EncodeToString([]byte(c.ClientID + ":" + c.ClientSecret))
+
+	data := url.Values{}
+	data.Set("grant_type", utils.RefreshTokenGrantTypeString)
+	data.Set("refresh_token", refreshToken)
 	data.Set("redirect_uri", c.RedirectURI)
 
 	req, err := http.NewRequest("POST", utils.TokenEndPoint, strings.NewReader(data.Encode()))
