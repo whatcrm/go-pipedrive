@@ -1,0 +1,40 @@
+package gopipedrive
+
+import (
+	"context"
+	"encoding/base64"
+	"net/http"
+	"net/url"
+	"strings"
+	"time"
+
+	"github.com/whatcrm/go-pipedrive/models"
+	"github.com/whatcrm/go-pipedrive/utils"
+)
+
+func (c *Client) GetAccessToken(ctx context.Context, authorizationCode string) (*models.TokenResponse, error) {
+	authHeaderValue := "Basic " + base64.StdEncoding.EncodeToString([]byte(c.ClientID+":"+c.ClientSecret))
+
+	data := url.Values{}
+	data.Set("grant_type", utils.AccessTokenGrantTypeString)
+	data.Set("code", authorizationCode)
+	data.Set("redirect_uri", c.RedirectURI)
+
+	req, err := http.NewRequest("POST", utils.TokenEndPoint, strings.NewReader(data.Encode()))
+	if err != nil {
+		return &models.TokenResponse{}, err
+	}
+
+	req.Header.Set("Authorization", authHeaderValue)
+
+	response := &models.TokenResponse{}
+
+	err = c.Send(req, response)
+
+	if response.AccessToken != "" {
+		c.Token = response
+		c.tokenExpiresAt = time.Now().Add(time.Duration(response.ExpiresIn) * time.Second)
+	}
+	
+	return response, err
+}
