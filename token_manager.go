@@ -32,7 +32,7 @@ func (c *Client) GetAccessToken(ctx context.Context, authorizationCode string) (
 	err = c.Send(req, response)
 
 	if response.AccessToken != "" {
-		c.Token = response
+		c.Token = response.AccessToken
 		c.tokenExpiresAt = time.Now().Add(time.Duration(response.ExpiresIn) * time.Second)
 	}
 	
@@ -59,7 +59,7 @@ func (c *Client) RefreshToken(ctx context.Context, refreshToken string) (*models
 	err = c.Send(req, response)
 
 	if response.AccessToken != "" {
-		c.Token = response
+		c.Token = response.AccessToken
 		c.tokenExpiresAt = time.Now().Add(time.Duration(response.ExpiresIn) * time.Second)
 	}
 	

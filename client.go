@@ -17,7 +17,7 @@ type Client struct {
 	ClientID       string
 	ClientSecret   string
 	APIBase        string
-	Token          *models.TokenResponse
+	Token          string
 	tokenExpiresAt time.Time
 	RedirectURI    string
 }
@@ -38,6 +38,21 @@ func NewClient(domain, clientID, clientSecret, redirectURI string) (*Client, err
 	}, nil
 }
 
+func (c *Client) SetToken(token string, tokenExpiresAt time.Time) error {
+	if token == "" {
+		return utils.ErrTokenRequired
+	}
+
+	if time.Now().After(tokenExpiresAt) {
+		return utils.ErrTokenExpired
+	}
+
+	c.Token = token
+	c.tokenExpiresAt = tokenExpiresAt
+
+	return nil
+}
+
 func (c *Client) Send(req *http.Request, v interface{}) error {
 	var (
 		err  error
@@ -51,7 +66,7 @@ func (c *Client) Send(req *http.Request, v interface{}) error {
 	if err != nil {
 		return err
 	}
-	
+
 	defer func(Body io.ReadCloser) error {
 		return Body.Close()
 	}(resp.Body)
@@ -81,3 +96,48 @@ func (c *Client) Send(req *http.Request, v interface{}) error {
 	return json.NewDecoder(resp.Body).Decode(v)
 }
 
+func (c *Client) SendWithAccessToken(req *http.Request, v interface{}) error {
+	var (
+		err  error
+		resp *http.Response
+		data []byte
+	)
+
+	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+	req.Header.Set("Authorization", "Bearer "+c.Token)
+
+	resp, err = c.Client.Do(req)
+	if err != nil {
+		return err
+	}
+
+	defer func(Body io.ReadCloser) error {
+		return Body.Close()
+	}(resp.Body)
+
+	fmt.Println(resp.StatusCode)
+
+	if resp.StatusCode < 200 || resp.StatusCode > 299 {
+		errResp := &models.ErrorResponse{}
+		data, err = io.ReadAll(resp.Body)
+
+		if err == nil && len(data) > 0 {
+			err := json.Unmarshal(data, errResp)
+			if err != nil {
+				return err
+			}
+		}
+
+		return errors.New(errResp.Error)
+	}
+	if v == nil {
+		return nil
+	}
+
+	if w, ok := v.(io.Writer); ok {
+		_, err := io.Copy(w, resp.Body)
+		return err
+	}
+
+	return json.NewDecoder(resp.Body).Decode(v)
+}

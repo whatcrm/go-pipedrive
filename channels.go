@@ -4,28 +4,38 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"fmt"
 	"net/http"
 
 	"github.com/whatcrm/go-pipedrive/models"
 	"github.com/whatcrm/go-pipedrive/utils"
 )
 
-func (c *Client) AddChannel(ctx context.Context, channel models.ChannelRequest) error {
+func (c *Client) AddChannel(ctx context.Context, channelReq models.ChannelRequest) (channel models.Channel, err error) {
 	url := c.APIBase + utils.ChannelEndPoint
+	fmt.Println(url)
 
-	requestBodyBytes, err := json.Marshal(channel)
+	requestBodyBytes, err := json.Marshal(channelReq)
 	if err != nil {
-		return err
+		return channel, err
 	}
 
 	req, err := http.NewRequest("POST", url, bytes.NewBuffer(requestBodyBytes))
 	if err != nil {
-		return err
+		return channel, err
 	}
 
 	req.Header.Set("Content-Type", "application/json")
 
-	return c.Send(req, nil)
+	response := &models.ChannelReponse{}
+	
+	err = c.SendWithAccessToken(req, response)
+
+	if response.Data.ID != "" {
+		channel = response.Data
+	}
+	
+	return channel, err
 }
 
 func (c *Client) ReceiveMessage(ctx context.Context, messageRequest models.MessageRequest) error {
