@@ -1,6 +1,7 @@
 package gopipedrive
 
 import (
+	"context"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -38,7 +39,7 @@ func NewClient(domain, clientID, clientSecret, redirectURI string) (*Client, err
 	}, nil
 }
 
-func (c *Client) SetToken(token string, tokenExpiresAt time.Time) error {
+func (c *Client) SetToken(ctx context.Context, token string, tokenExpiresAt time.Time) error {
 	if token == "" {
 		return utils.ErrTokenRequired
 	}
@@ -60,7 +61,7 @@ func (c *Client) Send(req *http.Request, v interface{}) error {
 		data []byte
 	)
 
-	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+	req.Header.Set("Content-Type", "application/json")
 
 	resp, err = c.Client.Do(req)
 	if err != nil {
@@ -103,8 +104,8 @@ func (c *Client) SendWithAccessToken(req *http.Request, v interface{}) error {
 		data []byte
 	)
 
-	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
-	req.Header.Set("Authorization", "Bearer "+c.Token)
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Authorization", "Bearer " + c.Token)
 
 	resp, err = c.Client.Do(req)
 	if err != nil {
@@ -115,7 +116,7 @@ func (c *Client) SendWithAccessToken(req *http.Request, v interface{}) error {
 		return Body.Close()
 	}(resp.Body)
 
-	fmt.Println(resp.StatusCode)
+	fmt.Println("status code: " , resp.StatusCode)
 
 	if resp.StatusCode < 200 || resp.StatusCode > 299 {
 		errResp := &models.ErrorResponse{}

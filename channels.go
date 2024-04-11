@@ -17,19 +17,24 @@ func (c *Client) AddChannel(ctx context.Context, channelReq models.ChannelReques
 
 	requestBodyBytes, err := json.Marshal(channelReq)
 	if err != nil {
+		fmt.Println("marshal err: ", err)
 		return channel, err
 	}
 
 	req, err := http.NewRequest("POST", url, bytes.NewBuffer(requestBodyBytes))
 	if err != nil {
+		fmt.Println("new req err: ", err)
 		return channel, err
 	}
 
-	req.Header.Set("Content-Type", "application/json")
 
 	response := &models.ChannelReponse{}
 	
 	err = c.SendWithAccessToken(req, response)
+	if err != nil {
+		fmt.Println("send req err: ", err)
+		return channel, err
+	}
 
 	if response.Data.ID != "" {
 		channel = response.Data
@@ -51,7 +56,6 @@ func (c *Client) ReceiveMessage(ctx context.Context, messageRequest models.Messa
 		return err
 	}
 
-	req.Header.Set("Content-Type", "application/json")
 
 	return c.Send(req, nil)
 }
