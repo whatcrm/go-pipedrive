@@ -17,9 +17,13 @@ type Pagination struct {
 }
 
 type ErrorResponse struct {
-	Success        bool           `json:"success"`
-	Error          string         `json:"error"`
-	ErrorInfo      string         `json:"error_info"`
-	Data           interface{}    `json:"data"`
-	AdditionalData interface{}    `json:"additional_data"`
+	Success bool   `json:"success"`
+	Message string `json:"message"`
+	Error   string `json:"error"`
+}
+
+type TokenErrorResponse struct {
+	Error   struct {
+		Message string `json:"message"` // Assuming "error" is the correct field name inside the nested object
+	} `json:"error"`
 }

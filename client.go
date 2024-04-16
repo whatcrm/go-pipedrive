@@ -60,11 +60,13 @@ func (c *Client) Send(req *http.Request, v interface{}) error {
 		resp *http.Response
 		data []byte
 	)
-
-	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+	req.Header.Set("Accept", "application/json")
+	
 
 	resp, err = c.Client.Do(req)
 	if err != nil {
+		fmt.Println("Do client error: ", err)
 		return err
 	}
 
@@ -73,17 +75,19 @@ func (c *Client) Send(req *http.Request, v interface{}) error {
 	}(resp.Body)
 
 	if resp.StatusCode < 200 || resp.StatusCode > 299 {
-		errResp := &models.ErrorResponse{}
+		errResp := &models.TokenErrorResponse{}
 		data, err = io.ReadAll(resp.Body)
+		fmt.Println("body: ", string(data))
 
 		if err == nil && len(data) > 0 {
 			err := json.Unmarshal(data, errResp)
 			if err != nil {
+				fmt.Println("unmarshall error: ", err)	
 				return err
 			}
 		}
 
-		return errors.New(errResp.Error)
+		return errors.New(errResp.Error.Message)
 	}
 	if v == nil {
 		return nil
@@ -128,7 +132,7 @@ func (c *Client) SendWithAccessToken(req *http.Request, v interface{}) error {
 				return err
 			}
 		}
-
+		fmt.Println(errResp)
 		return errors.New(errResp.Error)
 	}
 	if v == nil {

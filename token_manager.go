@@ -3,6 +3,7 @@ package gopipedrive
 import (
 	"context"
 	"encoding/base64"
+	"fmt"
 	"net/http"
 	"net/url"
 	"strings"
@@ -22,6 +23,7 @@ func (c *Client) GetAccessToken(ctx context.Context, authorizationCode string) (
 
 	req, err := http.NewRequest("POST", utils.TokenEndPoint, strings.NewReader(data.Encode()))
 	if err != nil {
+		fmt.Println("[GetAccessToken][NewRequest] err: ", err)
 		return &models.TokenResponse{}, err
 	}
 
@@ -30,6 +32,10 @@ func (c *Client) GetAccessToken(ctx context.Context, authorizationCode string) (
 	response := &models.TokenResponse{}
 
 	err = c.Send(req, response)
+	if err != nil {
+		fmt.Println("[GetAccessToken][Send request] err: ", err)
+		
+	}
 
 	if response.AccessToken != "" {
 		c.Token = response.AccessToken
