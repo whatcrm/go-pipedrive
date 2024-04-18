@@ -28,13 +28,11 @@ func NewClient(domain, clientID, clientSecret, redirectURI string) (*Client, err
 		return nil, errors.New("domain, client id and client secret are required to create a Client")
 	}
 
-	apiBase := fmt.Sprintf(utils.DomainBaseURL, domain)
-
 	return &Client{
 		Client:       &http.Client{},
 		ClientID:     clientID,
 		ClientSecret: clientSecret,
-		APIBase:      apiBase,
+		APIBase:      utils.BaseURL,
 		RedirectURI:  redirectURI,
 	}, nil
 }
@@ -77,7 +75,6 @@ func (c *Client) Send(req *http.Request, v interface{}) error {
 	if resp.StatusCode < 200 || resp.StatusCode > 299 {
 		errResp := &models.TokenErrorResponse{}
 		data, err = io.ReadAll(resp.Body)
-		fmt.Println("body: ", string(data))
 
 		if err == nil && len(data) > 0 {
 			err := json.Unmarshal(data, errResp)
@@ -120,8 +117,6 @@ func (c *Client) SendWithAccessToken(req *http.Request, v interface{}) error {
 		return Body.Close()
 	}(resp.Body)
 
-	fmt.Println("status code: " , resp.StatusCode)
-
 	if resp.StatusCode < 200 || resp.StatusCode > 299 {
 		errResp := &models.ErrorResponse{}
 		data, err = io.ReadAll(resp.Body)
@@ -132,7 +127,6 @@ func (c *Client) SendWithAccessToken(req *http.Request, v interface{}) error {
 				return err
 			}
 		}
-		fmt.Println(errResp)
 		return errors.New(errResp.Error)
 	}
 	if v == nil {
