@@ -57,18 +57,20 @@ func (c *Client) ReceiveMessage(ctx context.Context, messageRequest models.Messa
 	}
 
 
-	return c.Send(req, nil)
+	return c.SendWithAccessToken(req, nil)
 }
 
 func (c *Client) DeleteChannel(ctx context.Context, channelID string) error {
-	url := c.APIBase + utils.ChannelEndPoint + channelID
+	deleteChannelEndpoint := fmt.Sprintf(utils.DeleteChannelEndPoint, channelID)
+	url := c.APIBase + deleteChannelEndpoint
+	fmt.Println(url)
 
 	req, err := http.NewRequest("DELETE", url, nil)
 	if err != nil {
 		return err
 	}
 
-	return c.Send(req, nil)
+	return c.SendWithAccessToken(req, nil)
 }
 
 func (c *Client) DeleteConversation(ctx context.Context, channelID, conversationID string) error {
@@ -79,5 +81,5 @@ func (c *Client) DeleteConversation(ctx context.Context, channelID, conversation
 		return err
 	}
 
-	return c.Send(req, nil)
+	return c.SendWithAccessToken(req, nil)
 }

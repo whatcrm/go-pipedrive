@@ -120,7 +120,7 @@ func (c *Client) SendWithAccessToken(req *http.Request, v interface{}) error {
 	if resp.StatusCode < 200 || resp.StatusCode > 299 {
 		errResp := &models.ErrorResponse{}
 		data, err = io.ReadAll(resp.Body)
-
+		fmt.Println(string(data))
 		if err == nil && len(data) > 0 {
 			err := json.Unmarshal(data, errResp)
 			if err != nil {

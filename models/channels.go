@@ -10,17 +10,28 @@ type ChannelRequest struct {
 	ProviderType      string `json:"provider_type,omitempty"`
 }
 
+
 type MessageRequest struct {
-	ID               string   `json:"id"`
-	ChannelID        string   `json:"channel_id"`
-	SenderID         string   `json:"sender_id"`
-	ConversationID   string   `json:"conversation_id"`
-	Message          string   `json:"message"`
-	Status           string   `json:"status"`
-	CreatedAt        string   `json:"created_at"`
-	ReplyBy          string   `json:"reply_by,omitempty"`
-	ConversationLink string   `json:"conversation_link,omitempty"`
-	Attachments      []string `json:"attachments,omitempty"`
+	ID               string       `json:"id"`
+	SenderID         string       `json:"sender_id"`
+	ConversationID   string       `json:"conversation_id"`
+	ConversationLink *string      `json:"conversation_link,omitempty"`
+	ChannelID        string       `json:"channel_id"`
+	CreatedAt        string       `json:"created_at"`
+	Message          string       `json:"message"`
+	Status           interface{}  `json:"status"`
+	Attachments      []Attachment `json:"attachments"`
+	ReplyBy          *string      `json:"reply_by,omitempty"`
+}
+
+type Attachment struct {
+	ID          string  `json:"id"`
+	Type        string  `json:"type"`
+	Name        *string `json:"name"`
+	Size        *int    `json:"size"`
+	URL         string  `json:"url"`
+	PreviewURL  *string `json:"preview_url"`
+	LinkExpires *bool   `json:"link_expires,omitempty"`
 }
 
 type ChannelReponse struct {
