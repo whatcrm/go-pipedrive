@@ -105,7 +105,11 @@ func (c *Client) SendWithAccessToken(req *http.Request, v interface{}) error {
 		data []byte
 	)
 
-	req.Header.Set("Content-Type", "application/json")
+	if req.Method != "DELETE" {
+		req.Header.Set("Content-Type", "application/json")	
+	}
+	req.Header.Set("Accept", "application/json")
+
 	req.Header.Set("Authorization", "Bearer " + c.Token)
 
 	resp, err = c.Client.Do(req)
