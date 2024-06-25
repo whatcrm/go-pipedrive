@@ -10,4 +10,7 @@ const (
 	DeleteChannelEndPoint  = "channels/%s"
 	ReceiveMessageEndPoint = "channels/messages/receive"
 	ConversationEndPoint   = "/conversations/"
+	UserEndPoint           = "users"
+	UserMeEndPoint           = "/me"
+
 )
