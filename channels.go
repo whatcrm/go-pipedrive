@@ -11,6 +11,7 @@ import (
 	"github.com/whatcrm/go-pipedrive/utils"
 )
 
+// AddChannel creates a new channel with the provided channel request data.
 func (c *Client) AddChannel(ctx context.Context, channelReq models.ChannelRequest) (channel models.Channel, err error) {
 	url := c.APIBase + utils.ChannelEndPoint
 	fmt.Println(url)
@@ -27,9 +28,8 @@ func (c *Client) AddChannel(ctx context.Context, channelReq models.ChannelReques
 		return channel, err
 	}
 
-
 	response := &models.ChannelReponse{}
-	
+
 	err = c.SendWithAccessToken(req, response)
 	if err != nil {
 		fmt.Println("send req err: ", err)
@@ -39,12 +39,13 @@ func (c *Client) AddChannel(ctx context.Context, channelReq models.ChannelReques
 	if response.Data.ID != "" {
 		channel = response.Data
 	}
-	
+
 	return channel, err
 }
 
+// ReceiveMessage sends a message request to the specified endpoint.
 func (c *Client) ReceiveMessage(ctx context.Context, messageRequest models.MessageRequest) error {
-	url :=c.APIBase + utils.ReceiveMessageEndPoint
+	url := c.APIBase + utils.ReceiveMessageEndPoint
 
 	requestBodyBytes, err := json.Marshal(messageRequest)
 	if err != nil {
@@ -56,10 +57,10 @@ func (c *Client) ReceiveMessage(ctx context.Context, messageRequest models.Messa
 		return err
 	}
 
-
 	return c.SendWithAccessToken(req, nil)
 }
 
+// DeleteChannel deletes a channel with the specified channel ID.
 func (c *Client) DeleteChannel(ctx context.Context, channelID string) error {
 	deleteChannelEndpoint := fmt.Sprintf(utils.DeleteChannelEndPoint, channelID)
 	url := c.APIBase + deleteChannelEndpoint
@@ -73,6 +74,7 @@ func (c *Client) DeleteChannel(ctx context.Context, channelID string) error {
 	return c.SendWithAccessToken(req, nil)
 }
 
+// DeleteConversation deletes a conversation within a specified channel using the channel ID and conversation ID.
 func (c *Client) DeleteConversation(ctx context.Context, channelID, conversationID string) error {
 	url := c.APIBase + utils.ChannelEndPoint + channelID + utils.ConversationEndPoint + conversationID
 

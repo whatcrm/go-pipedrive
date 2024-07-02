@@ -6,29 +6,6 @@ type UsersResponse struct {
 	AdditionalData AdditionalData `json:"additional_data"`
 }
 
-type User struct {
-	ID                int      `json:"id"`
-	Name              string   `json:"name"`
-	Email             string   `json:"email"`
-	Lang              int      `json:"lang"`
-	Locale            string   `json:"locale,omitempty"`
-	TimezoneName      string   `json:"timezone_name,omitempty"`
-	TimezoneOffset    string   `json:"timezone_offset,omitempty"`
-	DefaultCurrency   string   `json:"default_currency,omitempty"`
-	IconURL           string   `json:"icon_url,omitempty"`
-	ActiveFlag        bool     `json:"active_flag"`
-	IsAdmin           int      `json:"is_admin"`
-	RoleID            int      `json:"role_id"`
-	Created           string   `json:"created"`
-	HasCreatedCompany bool     `json:"has_created_company"`
-	IsYou             bool     `json:"is_you"`
-	Access            []Access `json:"access"`
-	LastLogin         *string   `json:"last_login,omitempty"`
-	Modified          string   `json:"modified"`
-	Phone             *string   `json:"phone,omitempty"`
-	IsDeleted         bool     `json:"is_deleted"`
-}
-
 type Access struct {
 	App             string `json:"app"`
 	Admin           bool   `json:"admin"`
@@ -37,10 +14,10 @@ type Access struct {
 
 type UserResponse struct {
 	Success bool     `json:"success"`
-	Data    UserData `json:"data"`
+	Data    User `json:"data"`
 }
 
-type UserData struct {
+type User struct {
 	ID                int      `json:"id"`
 	Name              string   `json:"name"`
 	Email             string   `json:"email"`
@@ -66,6 +43,8 @@ type UserData struct {
 	CompanyDomain     string   `json:"company_domain"`
 	CompanyCountry    string   `json:"company_country"`
 	Language          Language `json:"language"`
+	Activated         bool     `json:"activated"`
+	CompanyIndustry   *string  `json:"company_industry,omitempty"`
 }
 
 type Language struct {
