@@ -43,7 +43,7 @@ func (c *Client) GetCurrentUser(ctx context.Context) (models.User, error) {
 }
 
 func (c *Client) GetUser(ctx context.Context, userID int) (*models.User, error) {
-	url := c.APIBase + "/v1/users/" + strconv.Itoa(userID)
+	url := c.APIBase + utils.UserEndPoint + "/" + strconv.Itoa(userID)
 
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
