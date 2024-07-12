@@ -48,4 +48,6 @@ const (
 	LeadSearchURL                     = "https://api.pipedrive.com/api/v2/leads/search"
 	LeadSourcesEndpoint               = "leadSources"
 	LeadLabelsEndpoint                = "leadLabels"
+	OrganizationParticipantsEndpoint  = "organizations/%d/persons"
+	PersonEndpoint = "persons/%d"
 )
