@@ -60,7 +60,6 @@ func (c *Client) Send(req *http.Request, v interface{}) error {
 	)
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 	req.Header.Set("Accept", "application/json")
-	
 
 	resp, err = c.Client.Do(req)
 	if err != nil {
@@ -75,17 +74,25 @@ func (c *Client) Send(req *http.Request, v interface{}) error {
 	if resp.StatusCode < 200 || resp.StatusCode > 299 {
 		errResp := &models.TokenErrorResponse{}
 		data, err = io.ReadAll(resp.Body)
-
-		if err == nil && len(data) > 0 {
-			err := json.Unmarshal(data, errResp)
-			if err != nil {
-				fmt.Println("unmarshall error: ", err)	
-				return err
-			}
+		if err != nil {
+			errResp.Error.Message = err.Error()
+			return errors.New(errResp.Error.Message)
 		}
 
-		return errors.New(errResp.Error.Message)
+		if len(data) <= 0 {
+			// TODO verify this issue
+			errResp.Error.Message = "data is empty"
+		}
+
+		// unmarshal is successful && error message exists
+		if err := json.Unmarshal(data, errResp); err == nil && errResp.Error.Message != "" {
+			return errors.New(errResp.Error.Message)
+		}
 	}
+
+	// log data
+	fmt.Println(string(data))
+
 	if v == nil {
 		return nil
 	}
@@ -106,11 +113,11 @@ func (c *Client) SendWithAccessToken(req *http.Request, v interface{}) error {
 	)
 
 	if req.Method != "DELETE" {
-		req.Header.Set("Content-Type", "application/json")	
+		req.Header.Set("Content-Type", "application/json")
 	}
 	req.Header.Set("Accept", "application/json")
 
-	req.Header.Set("Authorization", "Bearer " + c.Token)
+	req.Header.Set("Authorization", "Bearer "+c.Token)
 
 	resp, err = c.Client.Do(req)
 	if err != nil {
