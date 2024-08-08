@@ -72,22 +72,26 @@ func (c *Client) Send(req *http.Request, v interface{}) error {
 	}(resp.Body)
 
 	if resp.StatusCode < 200 || resp.StatusCode > 299 {
-		errResp := &models.TokenErrorResponse{}
+		// errResp := &models.TokenErrorResponse{}
 		data, err = io.ReadAll(resp.Body)
 		if err != nil {
-			errResp.Error.Message = err.Error()
-			return errors.New(errResp.Error.Message)
+			// errResp.Error.Message = err.Error()
+			return err
 		}
 
-		if len(data) <= 0 {
-			// TODO verify this issue
-			errResp.Error.Message = "data is empty"
-		}
+		// if len(data) <= 0 {
+		// 	// TODO verify this issue
+		// 	errResp.Error.Message = "data is empty"
+		// }
 
-		// unmarshal is successful && error message exists
-		if err := json.Unmarshal(data, errResp); err == nil && errResp.Error.Message != "" {
-			return errors.New(errResp.Error.Message)
-		}
+		// // unmarshal is successful && error message exists
+		// if err := json.Unmarshal(data, errResp); err == nil && errResp.Error.Message != "" {
+		// 	return errors.New(errResp.Error.Message)
+		// }
+
+		// it's better to leave the error message to the caller,
+		// since it's 200 - 299 status, there is an error, no matter the structure
+		return errors.New(string(data))
 	}
 
 	// log data
