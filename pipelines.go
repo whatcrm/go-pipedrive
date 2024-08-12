@@ -62,7 +62,7 @@ func (c *Client) GetStages(ctx context.Context) ([]models.Stage, error) {
 	return personResponse.Data, nil
 }
 
-func (c *Client) GetStagesFromPipeline(ctx context.Context, pipelineID int) (*models.Stage, error) {
+func (c *Client) GetStagesFromPipeline(ctx context.Context, pipelineID int) ([]models.Stage, error) {
 	pipelineEndpoint := fmt.Sprintf(utils.StagesFromPipelineEndpoint, pipelineID)
 	url := c.APIBase + pipelineEndpoint
 
@@ -71,11 +71,11 @@ func (c *Client) GetStagesFromPipeline(ctx context.Context, pipelineID int) (*mo
 		return nil, err
 	}
 
-	var personResponse models.StageResponse
+	var personResponse models.StagesResponse
 	err = c.SendWithAccessToken(req, &personResponse)
 	if err != nil {
 		return nil, err
 	}
 
-	return &personResponse.Data, nil
+	return personResponse.Data, nil
 }
