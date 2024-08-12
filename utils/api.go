@@ -49,5 +49,9 @@ const (
 	LeadSourcesEndpoint               = "leadSources"
 	LeadLabelsEndpoint                = "leadLabels"
 	OrganizationParticipantsEndpoint  = "organizations/%d/persons"
-	PersonEndpoint = "persons/%d"
+	PersonEndpoint                    = "persons/%d"
+	PipelinesEndpoint                 = "pipelines"
+	PipelineEndpoint                  = "pipelines/%d"
+	StagesEndpoint                    = "stages"
+	StagesFromPipelineEndpoint        = "stages?pipeline_id=%d"
 )
