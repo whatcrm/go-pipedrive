@@ -11,8 +11,8 @@ import (
 // ItemSearch is searching for an item by field's value and filters by item_types
 func (c *Client) ItemSearch(ctx context.Context, queryString map[string]string) ([]models.Item, error) {
 	// Required data: https://developers.pipedrive.com/docs/api/v1/ItemSearch
+	url := c.APIBase + utils.ItemSearchEndpoint
 
-	url := utils.ItemSearchEndpoint
 	if len(queryString) > 0 {
 		url += "?"
 		for key, value := range queryString {
