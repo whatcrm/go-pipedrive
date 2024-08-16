@@ -1,7 +1,9 @@
 package gopipedrive
 
 import (
+	"bytes"
 	"context"
+	"encoding/json"
 	"fmt"
 	"net/http"
 
@@ -54,28 +56,28 @@ func (c *Client) GetDeal(ctx context.Context, dealID int) (models.Deal, error) {
 }
 
 // // AddDeal creates a new deal
-// func (c *Client) AddDeal(ctx context.Context, dealReq models.DealRequest) (models.Deal, error) {
-// 	url := c.APIBase + utils.DealsEndpoint
+func (c *Client) AddDeal(ctx context.Context, dealReq models.DealRequest) (models.Deal, error) {
+	url := c.APIBase + utils.DealsEndpoint
 
-// 	requestBodyBytes, err := json.Marshal(dealReq)
-// 	if err != nil {
-// 		return models.Deal{}, err
-// 	}
+	requestBodyBytes, err := json.Marshal(dealReq)
+	if err != nil {
+		return models.Deal{}, err
+	}
 
-// 	req, err := http.NewRequest("POST", url, bytes.NewBuffer(requestBodyBytes))
-// 	if err != nil {
-// 		return models.Deal{}, err
-// 	}
-// 	req.Header.Set("Content-Type", "application/json")
+	req, err := http.NewRequest("POST", url, bytes.NewBuffer(requestBodyBytes))
+	if err != nil {
+		return models.Deal{}, err
+	}
+	req.Header.Set("Content-Type", "application/json")
 
-// 	var dealResponse models.DealResponse
-// 	err = c.SendWithAccessToken(req, &dealResponse)
-// 	if err != nil {
-// 		return models.Deal{}, err
-// 	}
+	var dealResponse models.DealResponse
+	err = c.SendWithAccessToken(req, &dealResponse)
+	if err != nil {
+		return models.Deal{}, err
+	}
 
-// 	return dealResponse.Data, nil
-// }
+	return dealResponse.Data, nil
+}
 
 // // UpdateDeal updates an existing deal
 // func (c *Client) UpdateDeal(ctx context.Context, dealID int, dealUpdateReq models.DealUpdateRequest) (models.Deal, error) {
