@@ -49,6 +49,7 @@ const (
 	LeadSourcesEndpoint               = "leadSources"
 	LeadLabelsEndpoint                = "leadLabels"
 	OrganizationParticipantsEndpoint  = "organizations/%d/persons"
+	AddPersonEndpoint                 = "persons"
 	PersonEndpoint                    = "persons/%d"
 	PipelinesEndpoint                 = "pipelines"
 	PipelineEndpoint                  = "pipelines/%d"

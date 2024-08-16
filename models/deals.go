@@ -91,6 +91,18 @@ type DealResponse struct {
 }
 
 // Person represents a person in the Pipedrive system.
+type PersonsRequest struct {
+	Name         string                 `json:"name"`
+	OwnerID      int                    `json:"owner_id,omitempty"`
+	OrgID        int                    `json:"org_id,omitempty"`
+	Email        []string               `json:"email,omitempty"`
+	Phone        []string               `json:"phone,omitempty"`
+	VisibleTo    string                 `json:"visible_to,omitempty"`
+	AddTime      string                 `json:"add_time,omitempty"`
+	CustomFields map[string]interface{} `json:"custom_fields,omitempty"`
+}
+
+// Person represents a person in the Pipedrive system.
 type Person struct {
 	ID         int          `json:"id"`
 	ActiveFlag bool         `json:"active_flag"`
@@ -459,7 +471,7 @@ type MailMessagesResponse struct {
 }
 
 type PersonsResponse struct {
-	Success        bool          `json:"success"`
+	Success        bool     `json:"success"`
 	Data           []Person `json:"data"`
 	AdditionalData struct {
 		Pagination struct {
@@ -471,7 +483,7 @@ type PersonsResponse struct {
 }
 
 type PersonResponse struct {
-	Success        bool          `json:"success"`
+	Success        bool   `json:"success"`
 	Data           Person `json:"data"`
 	AdditionalData struct {
 		Pagination struct {
