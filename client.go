@@ -9,7 +9,6 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/whatcrm/go-pipedrive/models"
 	"github.com/whatcrm/go-pipedrive/utils"
 )
 
@@ -133,23 +132,16 @@ func (c *Client) SendWithAccessToken(req *http.Request, v interface{}) error {
 	}(resp.Body)
 
 	if resp.StatusCode < 200 || resp.StatusCode > 299 {
-		errResp := &models.ErrorResponse{}
 		data, err = io.ReadAll(resp.Body)
 		fmt.Println(string(data))
-		if err == nil && len(data) > 0 {
-			err := json.Unmarshal(data, errResp)
-			if err != nil {
-				return err
-			}
-		}
-		return errors.New(errResp.Error)
+		return errors.New(string(data))
 	}
 	if v == nil {
 		return nil
 	}
 
 	if w, ok := v.(io.Writer); ok {
-		_, err := io.Copy(w, resp.Body)
+		_, err = io.Copy(w, resp.Body)
 		return err
 	}
 

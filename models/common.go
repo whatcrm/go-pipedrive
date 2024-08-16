@@ -11,9 +11,9 @@ type AdditionalData struct {
 }
 
 type Pagination struct {
-	Start                 string `json:"start"`
-	Limit                 any    `json:"limit"`
-	MoreItemsInCollection bool   `json:"more_items_in_collection"`
+	Start                 any  `json:"start"`
+	Limit                 any  `json:"limit"`
+	MoreItemsInCollection bool `json:"more_items_in_collection"`
 }
 
 type ErrorResponse struct {
@@ -23,7 +23,7 @@ type ErrorResponse struct {
 }
 
 type TokenErrorResponse struct {
-	Error   struct {
+	Error struct {
 		Message string `json:"message"` // Assuming "error" is the correct field name inside the nested object
 	} `json:"error"`
 }

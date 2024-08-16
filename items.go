@@ -8,15 +8,14 @@ import (
 	"net/http"
 )
 
-// ItemSearch is searching for an item by field's value and filters by item_types
-func (c *Client) ItemSearch(ctx context.Context, queryString map[string]string) ([]models.Item, error) {
-	// Required data: https://developers.pipedrive.com/docs/api/v1/ItemSearch
+// ItemSearch is searching for an item by field's value and filters by item_types. Required data: https://developers.pipedrive.com/docs/api/v1/ItemSearch
+func (c *Client) ItemSearch(ctx context.Context, queryString map[string]any) (*models.ItemSearchResponse, error) {
 	url := c.APIBase + utils.ItemSearchEndpoint
 
 	if len(queryString) > 0 {
 		url += "?"
 		for key, value := range queryString {
-			url += fmt.Sprintf("%s=%s&", key, value)
+			url += fmt.Sprintf("%s=%v&", key, value)
 		}
 		url = url[:len(url)-1]
 	}
@@ -32,5 +31,5 @@ func (c *Client) ItemSearch(ctx context.Context, queryString map[string]string) 
 		return nil, err
 	}
 
-	return leadSearchResponse.Data, nil
+	return &leadSearchResponse, nil
 }

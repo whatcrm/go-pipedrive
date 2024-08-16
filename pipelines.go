@@ -45,8 +45,7 @@ func (c *Client) GetPipeline(ctx context.Context, id int) (*models.Pipeline, err
 }
 
 func (c *Client) GetStages(ctx context.Context) ([]models.Stage, error) {
-	pipelineEndpoint := fmt.Sprintf(utils.StagesEndpoint)
-	url := c.APIBase + pipelineEndpoint
+	url := c.APIBase + utils.StagesEndpoint
 
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
