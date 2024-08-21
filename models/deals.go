@@ -5,7 +5,7 @@ type Deal struct {
 	ID                     int          `json:"id"`
 	CreatorUserID          User         `json:"creator_user_id"`
 	UserID                 User         `json:"user_id"`
-	PersonID               Person       `json:"person_id"`
+	PersonID               DealPerson   `json:"person_id"`
 	OrgID                  Organization `json:"org_id"`
 	StageID                int          `json:"stage_id"`
 	Title                  string       `json:"title"`
@@ -110,6 +110,16 @@ type Person struct {
 	Email      []Email      `json:"email"`
 	Phone      []Phone      `json:"phone"`
 	OwnerID    Owner        `json:"owner_id"`
+	OrgID      Organization `json:"org_id"`
+}
+
+type DealPerson struct {
+	ID         int          `json:"id"`
+	ActiveFlag bool         `json:"active_flag"`
+	Name       string       `json:"name"`
+	Email      []Email      `json:"email"`
+	Phone      []Phone      `json:"phone"`
+	OwnerID    int          `json:"owner_id"`
 	OrgID      Organization `json:"org_id"`
 }
 
