@@ -42,5 +42,6 @@ type Item struct {
 		Emails       []any    `json:"emails"`
 		PrimaryEmail any      `json:"primary_email"`
 		UpdateTime   string   `json:"update_time"`
+		IsArchived   bool     `json:"is_archived"`
 	} `json:"item"`
 }
