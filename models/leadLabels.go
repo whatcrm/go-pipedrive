@@ -8,6 +8,11 @@ type LeadLabel struct {
 	UpdateTime string `json:"update_time"`
 }
 
+type LeadLabelRequest struct {
+	Name      string `json:"name"`
+	Color     string `json:"color"`
+}
+
 type LeadLabelsResponse struct {
 	Success bool        `json:"success"`
 	Data    []LeadLabel `json:"data"`

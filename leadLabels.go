@@ -30,7 +30,7 @@ func (c *Client) GetAllLeadLabels(ctx context.Context) ([]models.LeadLabel, erro
 }
 
 // AddLeadLabel creates a new lead label.
-func (c *Client) AddLeadLabel(ctx context.Context, leadLabel models.LeadLabel) (models.LeadLabel, error) {
+func (c *Client) AddLeadLabel(ctx context.Context, leadLabel models.LeadLabelRequest) (models.LeadLabel, error) {
 	url := c.APIBase + utils.LeadLabelsEndpoint
 
 	requestBodyBytes, err := json.Marshal(leadLabel)
@@ -55,7 +55,7 @@ func (c *Client) AddLeadLabel(ctx context.Context, leadLabel models.LeadLabel) (
 }
 
 // UpdateLeadLabel updates the properties of a lead label.
-func (c *Client) UpdateLeadLabel(ctx context.Context, leadLabelID string, leadLabel models.LeadLabel) (models.LeadLabel, error) {
+func (c *Client) UpdateLeadLabel(ctx context.Context, leadLabelID string, leadLabel models.LeadLabelRequest) (models.LeadLabel, error) {
 	url := fmt.Sprintf("%s%s/%s", c.APIBase, utils.LeadLabelsEndpoint, leadLabelID)
 
 	requestBodyBytes, err := json.Marshal(leadLabel)
