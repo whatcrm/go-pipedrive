@@ -56,4 +56,5 @@ const (
 	StagesEndpoint                    = "stages"
 	StagesFromPipelineEndpoint        = "stages?pipeline_id=%d"
 	ItemSearchEndpoint                = "itemSearch"
+	CallLogsEndPoint                  = "callLogs"
 )
