@@ -7,9 +7,9 @@ type UsersResponse struct {
 }
 
 type Access struct {
-	App             string `json:"app"`
-	Admin           bool   `json:"admin"`
-	PermissionSetID string `json:"permission_set_id"`
+	App             string `json:"app,omitempty"`
+	Admin           bool   `json:"admin,omitempty"`
+	PermissionSetID string `json:"permission_set_id,omitempty"`
 }
 
 type UserResponse struct {
@@ -50,4 +50,10 @@ type User struct {
 type Language struct {
 	LanguageCode string `json:"language_code"`
 	CountryCode  string `json:"country_code"`
+}
+
+type CreateUserReq struct {
+	Email      string   `json:"email"`
+	Access     []Access `json:"access"`
+	ActiveFlag bool     `json:"active_flag"`
 }

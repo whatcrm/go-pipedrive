@@ -1,7 +1,9 @@
 package gopipedrive
 
 import (
+	"bytes"
 	"context"
+	"encoding/json"
 	"net/http"
 	"strconv"
 
@@ -46,6 +48,27 @@ func (c *Client) GetUser(ctx context.Context, userID int) (*models.User, error) 
 	url := c.APIBase + utils.UserEndPoint + "/" + strconv.Itoa(userID)
 
 	req, err := http.NewRequest("GET", url, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	var userResponse models.UserResponse
+	if err := c.SendWithAccessToken(req, &userResponse); err != nil {
+		return nil, err
+	}
+
+	return &userResponse.Data, nil
+}
+
+func (c *Client) AddUser(ctx context.Context, userReq models.CreateUserReq) (*models.User, error) {
+	url := c.APIBase + utils.UserEndPoint
+
+	requestBodyBytes, err := json.Marshal(userReq)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", url, bytes.NewBuffer(requestBodyBytes))
 	if err != nil {
 		return nil, err
 	}

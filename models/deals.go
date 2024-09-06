@@ -90,29 +90,6 @@ type DealResponse struct {
 	Data    Deal `json:"data"`
 }
 
-// Person represents a person in the Pipedrive system.
-type PersonsRequest struct {
-	Name         string                 `json:"name"`
-	OwnerID      int                    `json:"owner_id,omitempty"`
-	OrgID        int                    `json:"org_id,omitempty"`
-	Email        []string               `json:"email,omitempty"`
-	Phone        []string               `json:"phone,omitempty"`
-	VisibleTo    string                 `json:"visible_to,omitempty"`
-	AddTime      string                 `json:"add_time,omitempty"`
-	CustomFields map[string]interface{} `json:"custom_fields,omitempty"`
-}
-
-// Person represents a person in the Pipedrive system.
-type Person struct {
-	ID         int          `json:"id"`
-	ActiveFlag bool         `json:"active_flag"`
-	Name       string       `json:"name"`
-	Email      []Email      `json:"email"`
-	Phone      []Phone      `json:"phone"`
-	OwnerID    Owner        `json:"owner_id"`
-	OrgID      Organization `json:"org_id"`
-}
-
 type DealPerson struct {
 	ID         int          `json:"id"`
 	ActiveFlag bool         `json:"active_flag"`
