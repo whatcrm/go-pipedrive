@@ -22,9 +22,9 @@ type Client struct {
 	RedirectURI    string
 }
 
-func NewClient(domain, clientID, clientSecret, redirectURI string) (*Client, error) {
-	if domain == "" || clientID == "" || clientSecret == "" {
-		return nil, errors.New("domain, client id and client secret are required to create a Client")
+func NewClient(clientID, clientSecret, redirectURI string) (*Client, error) {
+	if clientID == "" || clientSecret == "" {
+		return nil, errors.New("client id and client secret are required to create a Client")
 	}
 
 	return &Client{
@@ -147,52 +147,3 @@ func (c *Client) SendWithAccessToken(req *http.Request, v interface{}) error {
 
 	return json.NewDecoder(resp.Body).Decode(v)
 }
-
-func (c *Client) SendWithAccessTokenFile(req *http.Request, v interface{}) error {
-	var (
-		err  error
-		resp *http.Response
-		data []byte
-	)
-	
-	req.Header.Set("Authorization", "Bearer "+c.Token)
-
-	// Set Content-Length if the request body size is known
-	if req.Body != nil {
-		if bodySize, ok := req.Body.(interface{ Len() int }); ok {
-			req.Header.Set("Content-Length", fmt.Sprintf("%d", bodySize.Len()))
-		}
-	}
-
-	// Send the request
-	resp, err = c.Client.Do(req)
-	if err != nil {
-		return err
-	}
-
-	defer func(Body io.ReadCloser) error {
-		return Body.Close()
-	}(resp.Body)
-
-	// Check for status code range
-	if resp.StatusCode < 200 || resp.StatusCode > 299 {
-		data, err = io.ReadAll(resp.Body)
-		fmt.Println(string(data))
-		return errors.New(string(data))
-	}
-
-	// Handle the response body
-	if v == nil {
-		return nil
-	}
-
-	// If the response needs to be written directly to an io.Writer
-	if w, ok := v.(io.Writer); ok {
-		_, err = io.Copy(w, resp.Body)
-		return err
-	}
-
-	// Otherwise, decode the response body into v
-	return json.NewDecoder(resp.Body).Decode(v)
-}
-
