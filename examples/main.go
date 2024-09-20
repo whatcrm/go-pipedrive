@@ -14,9 +14,7 @@ func main() {
 	authorizationCode := "<YOUR_AUTH_CODE>"
 	redirectURI := "<YOUR_REDIRECT_URI>"
 
-	domain := "<YOUR_COMPANY_DOMAIN>"
-
-	client, err := gopipedrive.NewClient(domain, clientID, clientSecret, redirectURI)
+	client, err := gopipedrive.NewClient(clientID, clientSecret, redirectURI)
 	if err != nil {
 		fmt.Println("error: ", err)
 	}
