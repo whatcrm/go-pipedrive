@@ -10,6 +10,8 @@ type PersonsRequest struct {
 	VisibleTo    string                 `json:"visible_to,omitempty"`
 	AddTime      string                 `json:"add_time,omitempty"`
 	CustomFields map[string]interface{} `json:"custom_fields,omitempty"`
+	Label        int                    `json:"label,omitempty"`
+	LabelIDs     []int                  `json:"label_ids,omitempty"`
 }
 
 // Person represents a person in the Pipedrive system.
@@ -42,10 +44,12 @@ type ImageLinks struct {
 	Image512 string `json:"512"`
 }
 
+// PersonPictureRequest holds the data for adding a picture to a person
 type PersonPictureRequest struct {
-	FilePath   string
-	CropX      int
-	CropY      int
-	CropWidth  int
-	CropHeight int
+    FilePath   string // The URL or file path of the image
+    CropX      int    // X coordinate for cropping
+    CropY      int    // Y coordinate for cropping
+    CropWidth  int    // Width of the cropping area
+    CropHeight int    // Height of the cropping area
 }
+

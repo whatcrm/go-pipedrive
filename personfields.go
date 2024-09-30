@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"fmt"
 	"net/http"
 
 	"github.com/whatcrm/go-pipedrive/models"
@@ -68,7 +69,7 @@ func (c *Client) AddPersonField(ctx context.Context, field models.PersonFieldReq
 
 // UpdatePersonField updates a specific person field by ID.
 func (c *Client) UpdatePersonField(ctx context.Context, fieldID int, field models.PersonFieldReq) (*models.PersonField, error) {
-	url := c.APIBase + utils.PersonFieldsEndPoint + "/" + string(fieldID)
+	url := fmt.Sprintf("%s%s/%d", c.APIBase, utils.PersonFieldsEndPoint, fieldID)
 
 	requestBodyBytes, err := json.Marshal(field)
 	if err != nil {

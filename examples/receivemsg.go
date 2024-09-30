@@ -23,10 +23,10 @@ func main() {
 
 	msg := models.MessageRequest{
 		ID:               "1",
-		ChannelID:        "5bf042cadb4f2d7d276540579be77e55",
-		SenderID:         "77028247806@c.us",
-		ConversationID:   "77028247806@c.us",
-		Message:          "dddd",
+		ChannelID:        "channelid",
+		SenderID:         "",
+		ConversationID:   "",
+		Message:          "",
 		Status:           "delivered",
 		CreatedAt:        "1716403321",
 		Attachments: []models.Attachment{

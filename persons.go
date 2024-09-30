@@ -5,8 +5,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"io"
-	"mime/multipart"
 	"net/http"
 
 	"github.com/whatcrm/go-pipedrive/models"
@@ -36,74 +34,25 @@ func (c *Client) AddPerson(ctx context.Context, leadReq models.PersonsRequest) (
 	return leadResponse.Data, nil
 }
 
-// AddPersonPicture uploads a picture to a person in Pipedrive
-func (c *Client) AddPersonPicture(ctx context.Context, personID int, req models.PersonPictureRequest) (models.PersonPictureResponse, error) {
-	baseUrl := c.APIBase + utils.PersonsEndpoint
-	url := fmt.Sprintf("%s/%d/picture", baseUrl, personID)
-
-	body := &bytes.Buffer{}
-	writer := multipart.NewWriter(body)
-
-	resp, err := http.Get(req.FilePath)
+// UpdatePerson updates the properties of an existing person
+func (c *Client) UpdatePerson(ctx context.Context, personID int, updateReq models.PersonsRequest) (models.Person, error) {
+	url := fmt.Sprintf("%s%s/%d", c.APIBase, utils.PersonsEndpoint, personID)
+	requestBodyBytes, err := json.Marshal(updateReq)
 	if err != nil {
-		return models.PersonPictureResponse{}, fmt.Errorf("failed to download file: %v", err)
-	}
-	defer resp.Body.Close()
-
-	contentType := resp.Header.Get("Content-Type")
-	fmt.Println("Content-Type:", contentType)
-	if contentType != "image/jpeg" && contentType != "image/png" && contentType != "image/gif" {
-		return models.PersonPictureResponse{}, fmt.Errorf("unsupported image type: %s", contentType)
+		return models.Person{}, err
 	}
 
-	part, err := writer.CreateFormFile("file", "image_from_url")
+	req, err := http.NewRequest("PUT", url, bytes.NewBuffer(requestBodyBytes))
 	if err != nil {
-		return models.PersonPictureResponse{}, err
+		return models.Person{}, err
 	}
+	req.Header.Set("Content-Type", "application/json")
 
-	_, err = io.Copy(part, resp.Body) // Directly copy response body into the multipart form
+	var personResponse models.PersonResponse
+	err = c.SendWithAccessToken(req, &personResponse)
 	if err != nil {
-		return models.PersonPictureResponse{}, fmt.Errorf("failed to write file to form: %v", err)
+		return models.Person{}, err
 	}
 
-	// Step 2: Add cropping fields if provided
-	if req.CropX != 0 {
-		_ = writer.WriteField("crop_x", fmt.Sprintf("%d", req.CropX))
-	}
-	if req.CropY != 0 {
-		_ = writer.WriteField("crop_y", fmt.Sprintf("%d", req.CropY))
-	}
-	if req.CropWidth != 0 {
-		_ = writer.WriteField("crop_width", fmt.Sprintf("%d", req.CropWidth))
-	}
-	if req.CropHeight != 0 {
-		_ = writer.WriteField("crop_height", fmt.Sprintf("%d", req.CropHeight))
-	}
-
-	// Step 3: Close multipart writer to finalize the body
-	err = writer.Close()
-	if err != nil {
-		return models.PersonPictureResponse{}, err
-	}
-
-	// Step 4: Send the POST request with the image data
-	request, err := http.NewRequest("POST", url, body)
-	if err != nil {
-		return models.PersonPictureResponse{}, err
-	}
-
-	// Set the appropriate headers
-
-	request.Header.Set("Content-Type", "multipart/form-data; boundary="+writer.Boundary())
-	request.Header.Set("Content-Length", fmt.Sprintf("%d", body.Len()))
-	request.Host = request.URL.Host // Set Host header
-
-	// Execute the request
-	var pictureResponse models.PersonPictureResponse
-	err = c.SendWithAccessTokenFile(request, &pictureResponse)
-	if err != nil {
-		return models.PersonPictureResponse{}, err
-	}
-
-	return pictureResponse, nil
+	return personResponse.Data, nil
 }

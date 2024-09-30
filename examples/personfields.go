@@ -9,48 +9,59 @@ import (
 	"github.com/whatcrm/go-pipedrive/models"
 )
 
-type Option struct {
-	Label string `json:"label"`
-}
-
 func main() {
 	clientID := "<YOUR_CLIENT_ID>"
 	clientSecret := "<YOUR_CLIENT_SECRET>"
 	redirectURI := "<YOUR_REDIRECT_URI>"
 	apiToken := "<API_TOKEN>"
-
+	
 	client, err := gopipedrive.NewClient(clientID, clientSecret, redirectURI)
 	if err != nil {
-		fmt.Println("error: ", err)
+		log.Fatal("error: ", err)
 	}
 
 	client.Token = apiToken
+	ctx := context.Background()
 
-	newLabelField := models.PersonFieldReq{
-		Name:      "Label",   // Name of the new label
-		FieldType: "enum",        // Setting the type to 'enum' for a dropdown option
-		Options: []Option{ // Define the options for the new label field
-			{Label: "VIP"},
-			{Label: "Regular"},
-			{Label: "New Customer"},
-		},
-		AddVisibleFlag: true, // Make it visible in the 'Add New' modal
+	// personFields, err := client.GetPersonFields(ctx)
+	// if err != nil {
+	// 	log.Fatal("Error getting person fields: ", err)
+	// }
+
+	// var existingOptions []models.Option
+	// var personFieldID int
+
+	// for _, p := range *personFields {
+	// 	if p.Name == "Label" {
+	// 		existingOptions = p.Options
+	// 		personFieldID = p.ID
+	// 	}
+	// }
+
+	// newField := models.PersonFieldReq{
+	// 	Name: "Label",
+	// 	Options: append(existingOptions, models.Option{Label: "New test label"}),
+	// 	AddVisibleFlag: true,
+	// }
+
+	// personField, err := client.UpdatePersonField(ctx, personFieldID, newField)
+	// if err != nil {
+	// 	log.Fatal("Error updating person field: ", err)
+	// }
+
+	// fmt.Print(personField)
+
+	newPersonField := models.PersonFieldReq{
+		Name: "Label By Whatcrm",
+		FieldType: "varchar",
+		AddVisibleFlag: true,
 	}
 
-	personField, err := client.AddPersonField(context.Background(), newLabelField)
+	persoField, err := client.AddPersonField(ctx, newPersonField)
 	if err != nil {
-		log.Fatal("Error adding new label to person: ", err)
+		log.Fatal("error adding: ", err)
 	}
 
-	fmt.Println("New label added to person field:", personField)
+	fmt.Print(persoField)
 
-	personFields, err := client.GetPersonFields(context.Background())
-	if err != nil {
-		log.Fatal("Error getting person fields: ", err)
-	}
-
-	fmt.Println("Person fields:")
-	for _, field := range *personFields {
-		fmt.Printf("ID: %d, Name: %s, Type: %s\n", field.ID, field.Name, field.FieldType)
-	}
 }
