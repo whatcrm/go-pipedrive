@@ -70,10 +70,10 @@ func main() {
 
 	fmt.Println("updated personField: ", updatedPersonField)
 
-	// err = client.DeletePersonField(ctx, 28)
-	// if err != nil {
-	// 	log.Fatal("Error deleting person field: ", err)
-	// }
+	err = client.DeletePersonField(ctx, 28)
+	if err != nil {
+		log.Fatal("Error deleting person field: ", err)
+	}
 
 	fmt.Println("deleted succesfully")
 

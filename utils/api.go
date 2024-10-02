@@ -57,4 +57,5 @@ const (
 	ItemSearchEndpoint                = "itemSearch"
 	CallLogsEndPoint                  = "callLogs"
 	PersonFieldsEndPoint              = "personFields"
+	DealFieldsEndPoint                = "dealFields"
 )
