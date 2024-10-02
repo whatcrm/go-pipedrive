@@ -14,7 +14,7 @@ func main() {
 	clientSecret := "<YOUR_CLIENT_SECRET>"
 	redirectURI := "<YOUR_REDIRECT_URI>"
 	apiToken := "<API_TOKEN>"
-	
+
 	client, err := gopipedrive.NewClient(clientID, clientSecret, redirectURI)
 	if err != nil {
 		log.Fatal("error: ", err)
@@ -23,45 +23,58 @@ func main() {
 	client.Token = apiToken
 	ctx := context.Background()
 
-	// personFields, err := client.GetPersonFields(ctx)
-	// if err != nil {
-	// 	log.Fatal("Error getting person fields: ", err)
-	// }
+	//Getting all person fields
 
-	// var existingOptions []models.Option
-	// var personFieldID int
+	personFields, err := client.GetPersonFields(ctx)
+	if err != nil {
+		log.Fatal("Error getting person fields: ", err)
+	}
 
-	// for _, p := range *personFields {
-	// 	if p.Name == "Label" {
-	// 		existingOptions = p.Options
-	// 		personFieldID = p.ID
-	// 	}
-	// }
+	fmt.Println("personFields: ", personFields)
 
-	// newField := models.PersonFieldReq{
-	// 	Name: "Label",
-	// 	Options: append(existingOptions, models.Option{Label: "New test label"}),
-	// 	AddVisibleFlag: true,
-	// }
-
-	// personField, err := client.UpdatePersonField(ctx, personFieldID, newField)
-	// if err != nil {
-	// 	log.Fatal("Error updating person field: ", err)
-	// }
-
-	// fmt.Print(personField)
+	// Adding new person field
 
 	newPersonField := models.PersonFieldReq{
-		Name: "Label By Whatcrm",
-		FieldType: "varchar",
+		Name:           "New Label Namme",
+		FieldType:      "varchar",
 		AddVisibleFlag: true,
 	}
 
-	persoField, err := client.AddPersonField(ctx, newPersonField)
+	personField, err := client.AddPersonField(ctx, newPersonField)
 	if err != nil {
 		log.Fatal("error adding: ", err)
 	}
 
-	fmt.Print(persoField)
+	fmt.Println("new personField: ", personField)
+
+	// Updating person fiels (adding opton to Labels)
+	var existingOptions []models.Option
+	var personFieldID int
+
+	for _, p := range *personFields {
+		if p.Name == "Labels" {
+			existingOptions = p.Options
+			personFieldID = p.ID
+		}
+	}
+
+	newField := models.PersonFieldReq{
+		Options:        append(existingOptions, models.Option{Label: "New test label"}),
+		AddVisibleFlag: true,
+	}
+
+	updatedPersonField, err := client.UpdatePersonField(ctx, personFieldID, newField)
+	if err != nil {
+		log.Fatal("Error updating person field: ", err)
+	}
+
+	fmt.Println("updated personField: ", updatedPersonField)
+
+	// err = client.DeletePersonField(ctx, 28)
+	// if err != nil {
+	// 	log.Fatal("Error deleting person field: ", err)
+	// }
+
+	fmt.Println("deleted succesfully")
 
 }

@@ -72,3 +72,4 @@ type PersonFieldReq struct {
 	Options        []Option `json:"options,omitempty"` // For set/enum field types
 	AddVisibleFlag bool     `json:"add_visible_flag,omitempty"`
 }
+

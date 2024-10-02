@@ -122,4 +122,3 @@ func (c *Client) sendPersonPictureRequest(url string, body *bytes.Buffer, writer
 	return res, nil
 }
 
-

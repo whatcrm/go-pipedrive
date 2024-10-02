@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"strings"
 
 	"github.com/whatcrm/go-pipedrive/models"
 	"github.com/whatcrm/go-pipedrive/utils"
@@ -30,7 +31,7 @@ func (c *Client) GetPersonFields(ctx context.Context) (*[]models.PersonField, er
 
 // GetPersonField fetches details of a specific person field by ID.
 func (c *Client) GetPersonField(ctx context.Context, fieldID int) (*models.PersonField, error) {
-	url := c.APIBase + utils.PersonFieldsEndPoint + "/" + string(fieldID)
+	url := fmt.Sprintf("%s%s/%d", c.APIBase, utils.PersonFieldsEndPoint, fieldID)
 
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
@@ -91,9 +92,31 @@ func (c *Client) UpdatePersonField(ctx context.Context, fieldID int, field model
 
 // DeletePersonField deletes a specific person field by ID.
 func (c *Client) DeletePersonField(ctx context.Context, fieldID int) error {
-	url := c.APIBase + utils.PersonFieldsEndPoint + "/" + string(fieldID)
+	url := fmt.Sprintf("%s%s/%d", c.APIBase, utils.PersonFieldsEndPoint, fieldID)
 
 	req, err := http.NewRequest("DELETE", url, nil)
+	if err != nil {
+		return err
+	}
+
+	var result map[string]interface{}
+	if err := c.SendWithAccessToken(req, &result); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// DeleteMultiplePersonFields deletes multiple person fields by their IDs.
+func (c *Client) DeleteMultiplePersonFields(ctx context.Context, fieldIDs []int) error {
+	url := c.APIBase + utils.PersonFieldsEndPoint
+
+	ids := make([]string, len(fieldIDs))
+	for i, id := range fieldIDs {
+		ids[i] = fmt.Sprintf("%d", id)
+	}
+
+	req, err := http.NewRequest("DELETE", url+"?ids="+strings.Join(ids, ","), nil)
 	if err != nil {
 		return err
 	}
