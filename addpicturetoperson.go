@@ -10,7 +10,6 @@ import (
 	"mime/multipart"
 	"net/http"
 	"net/textproto"
-	"os"
 	"slices"
 
 	"github.com/h2non/filetype"
@@ -117,12 +116,6 @@ func (c *Client) sendPersonPictureRequest(url string, body *bytes.Buffer, writer
 	respBody, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return models.PersonPictureResponse{}, fmt.Errorf("error reading response body: %v", err)
-	}
-
-	filePath := "./response_body.json" // Define the file path
-	err = os.WriteFile(filePath, respBody, 0644)
-	if err != nil {
-		return models.PersonPictureResponse{}, fmt.Errorf("error saving response body to file: %v", err)
 	}
 
 	err = json.Unmarshal(respBody, &res)
