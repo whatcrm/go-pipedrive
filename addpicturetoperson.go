@@ -4,12 +4,13 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"mime/multipart"
 	"net/http"
 	"net/textproto"
-	"path/filepath"
+	"os"
 	"slices"
 
 	"github.com/h2non/filetype"
@@ -19,6 +20,10 @@ import (
 
 // AddPersonPicture downloads an image from a URL and uploads it as a picture to a person in Pipedrive.
 func (c *Client) AddPersonPicture(ctx context.Context, personID int, requestBody models.PersonPictureRequest) (res models.PersonPictureResponse, err error) {
+	if requestBody.FileName == "" && requestBody.FilePath == "" {
+		return res, errors.New("filename and filepath are required")
+	}
+
 	url := fmt.Sprintf("%s%s/%d/%s", c.APIBase, utils.PersonsEndpoint, personID, "picture")
 
 	supportedExts := []string{"image/png", "image/jpg", "image/jpeg"}
@@ -28,7 +33,7 @@ func (c *Client) AddPersonPicture(ctx context.Context, personID int, requestBody
 		return models.PersonPictureResponse{}, err
 	}
 
-	body, writer, err := c.createMultipartFormData(filepath.Base(requestBody.FilePath), fileType, content)
+	body, writer, err := c.createMultipartFormData(requestBody.FileName, fileType, content)
 	if err != nil {
 		return models.PersonPictureResponse{}, err
 	}
@@ -114,6 +119,12 @@ func (c *Client) sendPersonPictureRequest(url string, body *bytes.Buffer, writer
 		return models.PersonPictureResponse{}, fmt.Errorf("error reading response body: %v", err)
 	}
 
+	filePath := "./response_body.json" // Define the file path
+	err = os.WriteFile(filePath, respBody, 0644)
+	if err != nil {
+		return models.PersonPictureResponse{}, fmt.Errorf("error saving response body to file: %v", err)
+	}
+
 	err = json.Unmarshal(respBody, &res)
 	if err != nil {
 		return models.PersonPictureResponse{}, fmt.Errorf("error unmarshaling response: %v", err)
@@ -121,4 +132,3 @@ func (c *Client) sendPersonPictureRequest(url string, body *bytes.Buffer, writer
 
 	return res, nil
 }
-

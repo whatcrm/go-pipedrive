@@ -14,7 +14,7 @@ func main() {
 	clientSecret := "<YOUR_CLIENT_SECRET>"
 	redirectURI := "<YOUR_REDIRECT_URI>"
 	apiToken := "<API_TOKEN>"
-
+	
 	client, err := gopipedrive.NewClient(clientID, clientSecret, redirectURI)
 	if err != nil {
 		fmt.Println("error:", err)
@@ -23,10 +23,11 @@ func main() {
 	client.Token = apiToken
 	ctx := context.Background()
 
-	imageURL := "image.jpg"
+	imageURL := "image_url"
 	personID := 49
 
 	req := models.PersonPictureRequest{
+		FileName: "file_name",
 		FilePath: imageURL,
 	}
 

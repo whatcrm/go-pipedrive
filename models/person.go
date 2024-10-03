@@ -46,10 +46,10 @@ type ImageLinks struct {
 
 // PersonPictureRequest holds the data for adding a picture to a person
 type PersonPictureRequest struct {
-    FilePath   string // The URL or file path of the image
-    CropX      int    // X coordinate for cropping
-    CropY      int    // Y coordinate for cropping
-    CropWidth  int    // Width of the cropping area
-    CropHeight int    // Height of the cropping area
+	FileName   string //required
+	FilePath   string //required The URL or file path of the image 
+	CropX      int    // X coordinate for cropping
+	CropY      int    // Y coordinate for cropping
+	CropWidth  int    // Width of the cropping area
+	CropHeight int    // Height of the cropping area
 }
-
