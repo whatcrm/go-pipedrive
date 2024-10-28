@@ -58,4 +58,9 @@ const (
 	CallLogsEndPoint                  = "callLogs"
 	PersonFieldsEndPoint              = "personFields"
 	DealFieldsEndPoint                = "dealFields"
+	ActivitiesEndpoint                = "activities"
+	OneActivityEndpoint               = "activities/%d"
+	ActivitiesCollectionEndpoint      = "activities/collection"
+	ActivityFieldsEndpoint            = "activityFields"
+	ActivityTypesEndpoint             = "activityTypes"
 )
