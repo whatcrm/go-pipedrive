@@ -72,4 +72,11 @@ const (
 	OrganizationPersonsEndpoint        = "v1/organizations/%d/persons"
 	OrganizationPermittedUsersEndpoint = "v1/organizations/%d/permittedUsers"
 	OrganizationFieldsEndpoint         = "v1/organizationFields"
+	ProductsEndpoint                   = "v1/products"
+	OneProductEndpoint                 = "v1/products/%s"
+	ProductDealsEndpoint               = "v1/products/%s/deals"
+	ProductVariationsEndpoint          = "api/v2/products/%s/variations"
+	ProductVariationEndpoint           = "api/v2/products/%s/variations/%s"
+	ProductFieldsEndpoint              = "v1/productFields"
+	OneProductFieldEndpoint            = "v1/productFields/%s"
 )

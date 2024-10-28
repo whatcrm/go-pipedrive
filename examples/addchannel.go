@@ -22,8 +22,8 @@ func main() {
 	client.Token = apiToken
 
 	channel := models.ChannelRequest{
-		Name:              "79952467898",
-		ProviderChannelID: "4e434d35c2bce4387191ede59394bed7",
+		Name:              "",
+		ProviderChannelID: "",
 		TemplateSupport:   false,
 		ProviderType:      "whatsapp",
 	}
