@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"strings"
 	"time"
 
 	"github.com/whatcrm/go-pipedrive/utils"
@@ -71,29 +72,13 @@ func (c *Client) Send(req *http.Request, v interface{}) error {
 	}(resp.Body)
 
 	if resp.StatusCode < 200 || resp.StatusCode > 299 {
-		// errResp := &models.TokenErrorResponse{}
 		data, err = io.ReadAll(resp.Body)
 		if err != nil {
-			// errResp.Error.Message = err.Error()
 			return err
 		}
-
-		// if len(data) <= 0 {
-		// 	// TODO verify this issue
-		// 	errResp.Error.Message = "data is empty"
-		// }
-
-		// // unmarshal is successful && error message exists
-		// if err := json.Unmarshal(data, errResp); err == nil && errResp.Error.Message != "" {
-		// 	return errors.New(errResp.Error.Message)
-		// }
-
-		// it's better to leave the error message to the caller,
-		// since it's 200 - 299 status, there is an error, no matter the structure
 		return errors.New(string(data))
 	}
 
-	// log data
 	fmt.Println(string(data))
 
 	if v == nil {
@@ -148,50 +133,15 @@ func (c *Client) SendWithAccessToken(req *http.Request, v interface{}) error {
 	return json.NewDecoder(resp.Body).Decode(v)
 }
 
-func (c *Client) SendWithAccessTokenFile(req *http.Request, v interface{}) error {
-	var (
-		err  error
-		resp *http.Response
-		data []byte
-	)
-	
-	req.Header.Set("Authorization", "Bearer "+c.Token)
-
-	// Set Content-Length if the request body size is known
-	if req.Body != nil {
-		if bodySize, ok := req.Body.(interface{ Len() int }); ok {
-			req.Header.Set("Content-Length", fmt.Sprintf("%d", bodySize.Len()))
-		}
+func buildQueryParamsString(params map[string]string) string {
+	if len(params) == 0 {
+		return ""
 	}
-
-	// Send the request
-	resp, err = c.Client.Do(req)
-	if err != nil {
-		return err
+	var queryString strings.Builder
+	queryString.WriteString("?")
+	for key, value := range params {
+		queryString.WriteString(fmt.Sprintf("%s=%v&", key, value))
 	}
-
-	defer func(Body io.ReadCloser) error {
-		return Body.Close()
-	}(resp.Body)
-
-	// Check for status code range
-	if resp.StatusCode < 200 || resp.StatusCode > 299 {
-		data, err = io.ReadAll(resp.Body)
-		fmt.Println(string(data))
-		return errors.New(string(data))
-	}
-
-	// Handle the response body
-	if v == nil {
-		return nil
-	}
-
-	// If the response needs to be written directly to an io.Writer
-	if w, ok := v.(io.Writer); ok {
-		_, err = io.Copy(w, resp.Body)
-		return err
-	}
-
-	// Otherwise, decode the response body into v
-	return json.NewDecoder(resp.Body).Decode(v)
+	query := queryString.String()
+	return query[:len(query)-1] // remove the trailing '&'
 }

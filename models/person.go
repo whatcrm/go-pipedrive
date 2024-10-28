@@ -47,9 +47,54 @@ type ImageLinks struct {
 // PersonPictureRequest holds the data for adding a picture to a person
 type PersonPictureRequest struct {
 	FileName   string //required
-	FilePath   string //required The URL or file path of the image 
+	FilePath   string //required The URL or file path of the image
 	CropX      int    // X coordinate for cropping
 	CropY      int    // Y coordinate for cropping
 	CropWidth  int    // Width of the cropping area
 	CropHeight int    // Height of the cropping area
+}
+
+type PersonsResponse struct {
+	Success        bool     `json:"success"`
+	Data           []Person `json:"data"`
+	AdditionalData struct {
+		Pagination struct {
+			Start                 int  `json:"start"`
+			Limit                 int  `json:"limit"`
+			MoreItemsInCollection bool `json:"more_items_in_collection"`
+		} `json:"pagination"`
+	} `json:"additional_data"`
+}
+
+type PersonResponse struct {
+	Success        bool   `json:"success"`
+	Data           Person `json:"data"`
+	AdditionalData struct {
+		Pagination struct {
+			Start                 int  `json:"start"`
+			Limit                 int  `json:"limit"`
+			MoreItemsInCollection bool `json:"more_items_in_collection"`
+		} `json:"pagination"`
+	} `json:"additional_data"`
+}
+
+// Email represents an email in the Pipedrive system.
+type Email struct {
+	Value   string `json:"value"`
+	Primary bool   `json:"primary"`
+}
+
+// Phone represents a phone number in the Pipedrive system.
+type Phone struct {
+	Value   string `json:"value"`
+	Primary bool   `json:"primary"`
+}
+type Owner struct {
+	ID         int    `json:"id"`
+	Name       string `json:"name"`
+	Email      string `json:"email"`
+	HasPic     int    `json:"has_pic"`
+	PicHash    string `json:"pic_hash"`
+	ActiveFlag bool   `json:"active_flag"`
+	Value      int    `json:"value"`
 }

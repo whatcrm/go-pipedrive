@@ -15,11 +15,7 @@ import (
 func (c *Client) GetAllLeads(ctx context.Context, queryParams map[string]string) ([]models.Lead, error) {
 	url := c.APIBase + utils.LeadsEndpoint
 	if len(queryParams) > 0 {
-		url += "?"
-		for key, value := range queryParams {
-			url += fmt.Sprintf("%s=%s&", key, value)
-		}
-		url = url[:len(url)-1]
+		url += buildQueryParamsString(queryParams)
 	}
 
 	req, err := http.NewRequest("GET", url, nil)
@@ -78,11 +74,7 @@ func (c *Client) ListPermittedUsers(ctx context.Context, leadID string) ([]int, 
 func (c *Client) SearchLeads(ctx context.Context, queryParams map[string]string) ([]models.Lead, error) {
 	url := utils.LeadSearchURL
 	if len(queryParams) > 0 {
-		url += "?"
-		for key, value := range queryParams {
-			url += fmt.Sprintf("%s=%s&", key, value)
-		}
-		url = url[:len(url)-1]
+		url += buildQueryParamsString(queryParams)
 	}
 
 	req, err := http.NewRequest("GET", url, nil)

@@ -30,7 +30,7 @@ type CallLog struct {
 	Note            string  `json:"note"`
 }
 
-type CallLogReq struct {
+type CallLogRequest struct {
 	ActivityID      int     `json:"activity_id,omitempty"`
 	PersonID        *int    `json:"person_id,omitempty"`
 	OrgID           *int    `json:"org_id,omitempty"`
@@ -40,9 +40,11 @@ type CallLogReq struct {
 	Duration        string  `json:"duration,omitempty"`
 	Outcome         string  `json:"outcome"` //required values: connected, no_answer, left_message, left_voicemail, wrong_number, busy
 	FromPhoneNumber string  `json:"from_phone_number,omitempty"`
-	ToPhoneNumber   string  `json:"to_phone_number"` //required 
-	StartTime       string  `json:"start_time"`//required 
-	EndTime         string  `json:"end_time"`//required 
-	UserID          int     `json:"user_id,omitempty"`
-	Note            string  `json:"note,omitempty"`
+	ToPhoneNumber   string  `json:"to_phone_number"` //required
+	StartTime       string  `json:"start_time"`      //required
+	EndTime         string  `json:"end_time"`        //required
+}
+
+type CallLogRecordingResponse struct {
+	Success bool `json:"success"`
 }
