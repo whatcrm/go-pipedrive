@@ -21,6 +21,8 @@ type DealRequest struct {
 	UserID            int     `json:"user_id,omitempty"`
 	PersonID          int     `json:"person_id,omitempty"`
 	OrganizationID    int     `json:"organization_id,omitempty"`
+	PipelineID        int     `json:"pipeline_id,omitempty"`
+	StageID           int     `json:"stage_id,omitempty"`
 	ExpectedCloseDate string  `json:"expected_close_date,omitempty"`
 	Status            string  `json:"status,omitempty"`
 }
@@ -32,6 +34,8 @@ type DealUpdateRequest struct {
 	UserID            int     `json:"user_id,omitempty"`
 	PersonID          int     `json:"person_id,omitempty"`
 	OrganizationID    int     `json:"organization_id,omitempty"`
+	PipelineID        int     `json:"pipeline_id,omitempty"`
+	StageID           int     `json:"stage_id,omitempty"`
 	ExpectedCloseDate string  `json:"expected_close_date,omitempty"`
 	Status            string  `json:"status,omitempty"`
 }
@@ -44,4 +48,19 @@ type DealResponse struct {
 type DealsResponse struct {
 	Success bool   `json:"success"`
 	Data    []Deal `json:"data"`
+}
+
+type Participant struct {
+	ID              int             `json:"id"`
+	AddTime         string          `json:"add_time"`
+	ActiveFlag      bool            `json:"active_flag"`
+	RelatedItemData RelatedItemData `json:"related_item_data"`
+	Person          Person          `json:"person"`
+	AddedByUserID   User            `json:"added_by_user_id"`
+	RelatedItemType string          `json:"related_item_type"`
+	RelatedItemID   int             `json:"related_item_id"`
+}
+type RelatedItemData struct {
+	DealID int    `json:"deal_id"`
+	Title  string `json:"title"`
 }
