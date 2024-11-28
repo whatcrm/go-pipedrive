@@ -27,6 +27,7 @@ const (
 	LeadSearchURL                      = "api/v2/leads/search"
 	LeadSourcesEndpoint                = "v1/leadSources"
 	LeadLabelsEndpoint                 = "v1/leadLabels"
+	DealParticipantsEndpoint           = "deals/%d/participants"
 	OrganizationParticipantsEndpoint   = "v1/organizations/%d/persons"
 	PersonsEndpoint                    = "v1/persons"
 	PersonEndpoint                     = "v1/persons/%d"

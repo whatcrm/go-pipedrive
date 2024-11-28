@@ -64,3 +64,16 @@ type RelatedItemData struct {
 	DealID int    `json:"deal_id"`
 	Title  string `json:"title"`
 }
+
+// DealParticipantsResponse represents the response from the API when fetching deal participants.
+type ParticipantsResponse struct {
+	Success        bool          `json:"success"`
+	Data           []Participant `json:"data"`
+	AdditionalData struct {
+		Pagination struct {
+			Start                 int  `json:"start"`
+			Limit                 int  `json:"limit"`
+			MoreItemsInCollection bool `json:"more_items_in_collection"`
+		} `json:"pagination"`
+	} `json:"additional_data"`
+}
