@@ -109,3 +109,28 @@ func (c *Client) DeleteDeal(ctx context.Context, dealID string) error {
 
 	return c.SendWithAccessToken(req, nil)
 }
+
+func (c *Client) ListDealParticipants(ctx context.Context, dealID int, queryParams map[string]string) ([]models.Participant, error) {
+	dealEndpoint := fmt.Sprintf(utils.DealParticipantsEndpoint, dealID)
+	url := c.APIBase + dealEndpoint
+	if len(queryParams) > 0 {
+		url += "?"
+		for key, value := range queryParams {
+			url += fmt.Sprintf("%s=%s&", key, value)
+		}
+		url = url[:len(url)-1]
+	}
+
+	req, err := http.NewRequest("GET", url, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	var participantsResponse models.ParticipantsResponse
+	err = c.SendWithAccessToken(req, &participantsResponse)
+	if err != nil {
+		return nil, err
+	}
+
+	return participantsResponse.Data, nil
+}
