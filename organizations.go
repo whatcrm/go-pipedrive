@@ -125,7 +125,7 @@ func (c *Client) UpdateOrganization(ctx context.Context, id int, updates map[str
 	if err != nil {
 		return nil, err
 	}
-	req, err := http.NewRequest("PUT", url, bytes.NewBuffer(body))
+	req, err := http.NewRequest("PATCH", url, bytes.NewBuffer(body))
 	if err != nil {
 		return nil, err
 	}

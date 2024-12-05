@@ -3,7 +3,9 @@ package models
 type ItemSearchResponse struct {
 	Success        bool           `json:"success"`
 	Data           ItemSearchData `json:"data"`
-	AdditionalData AdditionalData `json:"additional_data"`
+	AdditionalData struct {
+		NextCursor string `json:"next_cursor"`
+	} `json:"additional_data"`
 }
 
 type ItemSearchData struct {

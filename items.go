@@ -10,48 +10,10 @@ import (
 	"github.com/whatcrm/go-pipedrive/utils"
 )
 
-// ItemSearchV1 performs a search for items based on a query string using API v1.
-func (c *Client) ItemSearchV1(ctx context.Context, queryParams map[string]interface{}) (*models.ItemSearchResponse, error) {
-	url := c.APIBase + utils.ItemSearchV1Endpoint
-	url += buildQueryParams(queryParams)
-
-	req, err := http.NewRequest("GET", url, nil)
-	if err != nil {
-		return nil, err
-	}
-
-	var response models.ItemSearchResponse
-	err = c.SendWithAccessToken(req, &response)
-	if err != nil {
-		return nil, err
-	}
-
-	return &response, nil
-}
-
 // ItemSearchV2 performs a search for items based on a query string using API v2.
 func (c *Client) ItemSearchV2(ctx context.Context, queryParams map[string]interface{}) (*models.ItemSearchResponse, error) {
 	url := c.APIBase + utils.ItemSearchV2Endpoint
 	url += buildQueryParams(queryParams)
-
-	req, err := http.NewRequest("GET", url, nil)
-	if err != nil {
-		return nil, err
-	}
-
-	var response models.ItemSearchResponse
-	err = c.SendWithAccessToken(req, &response)
-	if err != nil {
-		return nil, err
-	}
-
-	return &response, nil
-}
-
-// ItemSearchFieldV1 performs a field-specific search using API v1.
-func (c *Client) ItemSearchFieldV1(ctx context.Context, searchParams map[string]interface{}) (*models.ItemSearchResponse, error) {
-	url := c.APIBase + utils.ItemSearchFieldV1Endpoint
-	url += buildQueryParams(searchParams)
 
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {

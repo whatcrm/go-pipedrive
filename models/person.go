@@ -1,28 +1,65 @@
 package models
 
 // Person represents a person in the Pipedrive system.
+type Person struct {
+	ID         int      `json:"id"`
+	ActiveFlag bool     `json:"active_flag"`
+	Name       string   `json:"name"`
+	Emails     []Emails `json:"emails"`
+	Phones     []Phones `json:"phones"`
+	OwnerID    int      `json:"owner_id"`
+	OrgID      int      `json:"org_id"`
+}
+
+// Person represents a person in the Pipedrive system.
 type PersonsRequest struct {
 	Name         string                 `json:"name"`
 	OwnerID      int                    `json:"owner_id,omitempty"`
 	OrgID        int                    `json:"org_id,omitempty"`
-	Email        []string               `json:"email,omitempty"`
-	Phone        []string               `json:"phone,omitempty"`
-	VisibleTo    string                 `json:"visible_to,omitempty"`
+	Emails       []string               `json:"emails,omitempty"`
+	Phones       []string               `json:"phones,omitempty"`
+	VisibleTo    int                    `json:"visible_to,omitempty"`
 	AddTime      string                 `json:"add_time,omitempty"`
 	CustomFields map[string]interface{} `json:"custom_fields,omitempty"`
-	Label        int                    `json:"label,omitempty"`
 	LabelIDs     []int                  `json:"label_ids,omitempty"`
 }
 
-// Person represents a person in the Pipedrive system.
-type Person struct {
-	ID         int          `json:"id"`
-	ActiveFlag bool         `json:"active_flag"`
-	Name       string       `json:"name"`
-	Email      []Email      `json:"email"`
-	Phone      []Phone      `json:"phone"`
-	OwnerID    Owner        `json:"owner_id"`
-	OrgID      Organization `json:"org_id"`
+type PersonsResponse struct {
+	Success        bool     `json:"success"`
+	Data           []Person `json:"data"`
+	AdditionalData struct {
+		NextCursor string `json:"next_cursor"`
+	} `json:"additional_data"`
+}
+
+type PersonResponse struct {
+	Success        bool   `json:"success"`
+	Data           Person `json:"data"`
+	AdditionalData struct {
+		NextCursor string `json:"next_cursor"`
+	} `json:"additional_data"`
+}
+
+// Email represents an email in the Pipedrive system.
+type Emails struct {
+	Value   string `json:"value"`
+	Primary bool   `json:"primary"`
+}
+
+// Phone represents a phone number in the Pipedrive system.
+type Phones struct {
+	Value   string `json:"value"`
+	Primary bool   `json:"primary"`
+}
+
+// PersonPictureRequest holds the data for adding a picture to a person
+type PersonPictureRequest struct {
+	FileName   string //required
+	FilePath   string //required The URL or file path of the image
+	CropX      int    // X coordinate for cropping
+	CropY      int    // Y coordinate for cropping
+	CropWidth  int    // Width of the cropping area
+	CropHeight int    // Height of the cropping area
 }
 
 // PersonPictureResponse represents the response when uploading a picture to a person.
@@ -42,59 +79,4 @@ type PersonPictureResponse struct {
 type ImageLinks struct {
 	Image128 string `json:"128"`
 	Image512 string `json:"512"`
-}
-
-// PersonPictureRequest holds the data for adding a picture to a person
-type PersonPictureRequest struct {
-	FileName   string //required
-	FilePath   string //required The URL or file path of the image
-	CropX      int    // X coordinate for cropping
-	CropY      int    // Y coordinate for cropping
-	CropWidth  int    // Width of the cropping area
-	CropHeight int    // Height of the cropping area
-}
-
-type PersonsResponse struct {
-	Success        bool     `json:"success"`
-	Data           []Person `json:"data"`
-	AdditionalData struct {
-		Pagination struct {
-			Start                 int  `json:"start"`
-			Limit                 int  `json:"limit"`
-			MoreItemsInCollection bool `json:"more_items_in_collection"`
-		} `json:"pagination"`
-	} `json:"additional_data"`
-}
-
-type PersonResponse struct {
-	Success        bool   `json:"success"`
-	Data           Person `json:"data"`
-	AdditionalData struct {
-		Pagination struct {
-			Start                 int  `json:"start"`
-			Limit                 int  `json:"limit"`
-			MoreItemsInCollection bool `json:"more_items_in_collection"`
-		} `json:"pagination"`
-	} `json:"additional_data"`
-}
-
-// Email represents an email in the Pipedrive system.
-type Email struct {
-	Value   string `json:"value"`
-	Primary bool   `json:"primary"`
-}
-
-// Phone represents a phone number in the Pipedrive system.
-type Phone struct {
-	Value   string `json:"value"`
-	Primary bool   `json:"primary"`
-}
-type Owner struct {
-	ID         int    `json:"id"`
-	Name       string `json:"name"`
-	Email      string `json:"email"`
-	HasPic     int    `json:"has_pic"`
-	PicHash    string `json:"pic_hash"`
-	ActiveFlag bool   `json:"active_flag"`
-	Value      int    `json:"value"`
 }
