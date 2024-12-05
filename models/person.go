@@ -53,16 +53,6 @@ type Phones struct {
 	Primary bool   `json:"primary"`
 }
 
-// PersonPictureRequest holds the data for adding a picture to a person
-type PersonPictureRequest struct {
-	FileName   string //required
-	FilePath   string //required The URL or file path of the image
-	CropX      int    // X coordinate for cropping
-	CropY      int    // Y coordinate for cropping
-	CropWidth  int    // Width of the cropping area
-	CropHeight int    // Height of the cropping area
-}
-
 // PersonPictureResponse represents the response when uploading a picture to a person.
 type PersonPictureResponse struct {
 	Success       bool       `json:"success"`
@@ -74,6 +64,16 @@ type PersonPictureResponse struct {
 	UpdateTime    string     `json:"update_time"`
 	AddedByUserID int        `json:"added_by_user_id"`
 	Images        ImageLinks `json:"images"`
+}
+
+// PersonPictureRequest holds the data for adding a picture to a person
+type PersonPictureRequest struct {
+	FileName   string //required
+	FilePath   string //required The URL or file path of the image
+	CropX      int    // X coordinate for cropping
+	CropY      int    // Y coordinate for cropping
+	CropWidth  int    // Width of the cropping area
+	CropHeight int    // Height of the cropping area
 }
 
 // ImageLinks holds the links for the different sizes of the uploaded picture.
