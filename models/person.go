@@ -2,13 +2,13 @@ package models
 
 // Person represents a person in the Pipedrive system.
 type Person struct {
-	ID         int      `json:"id"`
-	ActiveFlag bool     `json:"active_flag"`
-	Name       string   `json:"name"`
-	Emails     []Emails `json:"emails"`
-	Phones     []Phones `json:"phones"`
-	OwnerID    int      `json:"owner_id"`
-	OrgID      int      `json:"org_id"`
+	ID         int         `json:"id"`
+	ActiveFlag bool        `json:"active_flag"`
+	Name       string      `json:"name"`
+	Emails     []Emails    `json:"emails"`
+	Phones     []Phones    `json:"phones"`
+	OwnerID    interface{} `json:"owner_id"`
+	OrgID      int         `json:"org_id"`
 }
 
 // Person represents a person in the Pipedrive system.
