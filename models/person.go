@@ -8,7 +8,7 @@ type Person struct {
 	Emails     []Emails    `json:"emails"`
 	Phones     []Phones    `json:"phones"`
 	OwnerID    interface{} `json:"owner_id"`
-	OrgID      int         `json:"org_id"`
+	OrgID      interface{} `json:"org_id"`
 }
 
 // Person represents a person in the Pipedrive system.
@@ -16,8 +16,8 @@ type PersonsRequest struct {
 	Name         string                 `json:"name"`
 	OwnerID      int                    `json:"owner_id,omitempty"`
 	OrgID        int                    `json:"org_id,omitempty"`
-	Emails       []Emails               `json:"emails,omitempty"`
-	Phones       []Phones               `json:"phones,omitempty"`
+	Emails       []string               `json:"emails,omitempty"`
+	Phones       []string               `json:"phones,omitempty"`
 	VisibleTo    int                    `json:"visible_to,omitempty"`
 	AddTime      string                 `json:"add_time,omitempty"`
 	CustomFields map[string]interface{} `json:"custom_fields,omitempty"`
