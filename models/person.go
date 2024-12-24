@@ -16,8 +16,8 @@ type PersonsRequest struct {
 	Name         string                 `json:"name"`
 	OwnerID      int                    `json:"owner_id,omitempty"`
 	OrgID        int                    `json:"org_id,omitempty"`
-	Emails       []string               `json:"emails,omitempty"`
-	Phones       []string               `json:"phones,omitempty"`
+	Emails       []Emails               `json:"emails,omitempty"`
+	Phones       []Phones               `json:"phones,omitempty"`
 	VisibleTo    int                    `json:"visible_to,omitempty"`
 	AddTime      string                 `json:"add_time,omitempty"`
 	CustomFields map[string]interface{} `json:"custom_fields,omitempty"`

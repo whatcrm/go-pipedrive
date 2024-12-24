@@ -30,7 +30,7 @@ func (c *Client) GetWebhooks(ctx context.Context) (*[]models.Webhook, error) {
 
 // AddWebhook adds a new webhook.
 func (c *Client) AddWebhook(ctx context.Context, webhookReq models.CreateWebhookReq) (*models.Webhook, error) {
-	url := c.APIBase + utils.WebhooksEndPoint
+	url := c.APIBase + utils.WebhooksEndPointV2
 
 	requestBodyBytes, err := json.Marshal(webhookReq)
 	if err != nil {

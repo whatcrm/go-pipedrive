@@ -4,6 +4,7 @@ const (
 	BaseURL                          = "https://api.pipedrive.com/"
 	DomainBaseURL                    = "https://%s.pipedrive.com/"
 	WebhooksEndPoint                 = "v1/webhooks"
+	WebhooksEndPointV2               = "v2/webhooks"
 	TokenEndPoint                    = "https://oauth.pipedrive.com/oauth/token"
 	ChannelEndPoint                  = "v1/channels"
 	DeleteChannelEndPoint            = "v1/channels/%s"
