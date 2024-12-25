@@ -5,9 +5,9 @@ type Deal struct {
 	Title             string  `json:"title"`
 	Value             float64 `json:"value"`
 	Currency          string  `json:"currency"`
-	UserID            int     `json:"user_id"`
+	OwnerID           int     `json:"owner_id"`
 	PersonID          int     `json:"person_id,omitempty"`
-	OrganizationID    int     `json:"organization_id,omitempty"`
+	OrganizationID    int     `json:"org_id,omitempty"`
 	ExpectedCloseDate string  `json:"expected_close_date,omitempty"`
 	Status            string  `json:"status"`
 	AddTime           string  `json:"add_time"`
@@ -18,9 +18,9 @@ type DealRequest struct {
 	Title             string  `json:"title"`
 	Value             float64 `json:"value,omitempty"`
 	Currency          string  `json:"currency,omitempty"`
-	UserID            int     `json:"user_id,omitempty"`
+	OwnerID           int     `json:"owner_id,omitempty"`
 	PersonID          int     `json:"person_id,omitempty"`
-	OrganizationID    int     `json:"organization_id,omitempty"`
+	OrganizationID    int     `json:"org_id,omitempty"`
 	PipelineID        int     `json:"pipeline_id,omitempty"`
 	StageID           int     `json:"stage_id,omitempty"`
 	ExpectedCloseDate string  `json:"expected_close_date,omitempty"`
@@ -31,9 +31,9 @@ type DealUpdateRequest struct {
 	Title             string  `json:"title,omitempty"`
 	Value             float64 `json:"value,omitempty"`
 	Currency          string  `json:"currency,omitempty"`
-	UserID            int     `json:"user_id,omitempty"`
+	OwnerID           int     `json:"owner_id,omitempty"`
 	PersonID          int     `json:"person_id,omitempty"`
-	OrganizationID    int     `json:"organization_id,omitempty"`
+	OrganizationID    int     `json:"org_id,omitempty"`
 	PipelineID        int     `json:"pipeline_id,omitempty"`
 	StageID           int     `json:"stage_id,omitempty"`
 	ExpectedCloseDate string  `json:"expected_close_date,omitempty"`

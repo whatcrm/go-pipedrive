@@ -7,9 +7,9 @@ type Product struct {
 	Description      string  `json:"description,omitempty"`
 	Unit             string  `json:"unit,omitempty"`
 	Tax              float64 `json:"tax,omitempty"`
-	ActiveFlag       bool    `json:"active_flag"`
-	Selectable       bool    `json:"selectable"`
-	VisibleTo        string  `json:"visible_to"`
+	IsDeleted        bool    `json:"is_deleted"`
+	IsLinkable       bool    `json:"is_linkable"`
+	VisibleTo        int     `json:"visible_to"`
 	BillingFrequency string  `json:"billing_frequency,omitempty"`
 }
 
@@ -19,9 +19,9 @@ type ProductRequest struct {
 	Description      string  `json:"description,omitempty"`
 	Unit             string  `json:"unit,omitempty"`
 	Tax              float64 `json:"tax,omitempty"`
-	ActiveFlag       bool    `json:"active_flag"`
-	Selectable       bool    `json:"selectable"`
-	VisibleTo        string  `json:"visible_to,omitempty"`
+	IsDeleted        bool    `json:"is_deleted"`
+	IsLinkable       bool    `json:"is_linkable"`
+	VisibleTo        int     `json:"visible_to,omitempty"`
 	OwnerID          int     `json:"owner_id,omitempty"`
 	Prices           []Price `json:"prices,omitempty"`
 	BillingFrequency string  `json:"billing_frequency,omitempty"`
@@ -33,9 +33,9 @@ type ProductUpdateRequest struct {
 	Description      string  `json:"description,omitempty"`
 	Unit             string  `json:"unit,omitempty"`
 	Tax              float64 `json:"tax,omitempty"`
-	ActiveFlag       bool    `json:"active_flag"`
-	Selectable       bool    `json:"selectable"`
-	VisibleTo        string  `json:"visible_to,omitempty"`
+	IsDeleted        bool    `json:"is_deleted"`
+	IsLinkable       bool    `json:"is_linkable"`
+	VisibleTo        int     `json:"visible_to,omitempty"`
 	Prices           []Price `json:"prices,omitempty"`
 	BillingFrequency string  `json:"billing_frequency,omitempty"`
 }
@@ -51,11 +51,10 @@ type ProductsResponse struct {
 }
 
 type Price struct {
-	Currency      string  `json:"currency"`
-	Price         float64 `json:"price"`
-	Cost          float64 `json:"cost,omitempty"`
-	OverheadCost  float64 `json:"overhead_cost,omitempty"`
-	Notes         string  `json:"notes,omitempty"`
+	Currency     string  `json:"currency"`
+	Price        float64 `json:"price"`
+	Cost         float64 `json:"cost,omitempty"`
+	OverheadCost float64 `json:"overhead_cost,omitempty"`
 }
 
 type ProductVariation struct {

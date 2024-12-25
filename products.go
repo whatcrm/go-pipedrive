@@ -83,7 +83,7 @@ func (c *Client) UpdateProduct(ctx context.Context, productID string, productUpd
 		return models.Product{}, err
 	}
 
-	req, err := http.NewRequest("PUT", url, bytes.NewBuffer(requestBodyBytes))
+	req, err := http.NewRequest("PATCH", url, bytes.NewBuffer(requestBodyBytes))
 	if err != nil {
 		return models.Product{}, err
 	}
