@@ -25,6 +25,7 @@ type DealRequest struct {
 	StageID           int     `json:"stage_id,omitempty"`
 	ExpectedCloseDate string  `json:"expected_close_date,omitempty"`
 	Status            string  `json:"status,omitempty"`
+	LabelIDs          []int   `json:"label_ids,omitempty"`
 }
 
 type DealUpdateRequest struct {
@@ -38,6 +39,7 @@ type DealUpdateRequest struct {
 	StageID           int     `json:"stage_id,omitempty"`
 	ExpectedCloseDate string  `json:"expected_close_date,omitempty"`
 	Status            string  `json:"status,omitempty"`
+	LabelIDs          []int   `json:"label_ids,omitempty"`
 }
 
 type DealResponse struct {

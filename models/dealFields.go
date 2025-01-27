@@ -62,8 +62,8 @@ type DealField struct {
 
 // DealFieldReq represents the request body for adding/updating a deal field.
 type DealFieldReq struct {
-	Name           string   `json:"name,omitempty"`
-	FieldType      string   `json:"field_type,omitempty"`
-	Options        []Option `json:"options,omitempty"` // For set/enum field types
-	AddVisibleFlag bool     `json:"add_visible_flag,omitempty"`
+	Name           string       `json:"name,omitempty"`
+	FieldType      string       `json:"field_type,omitempty"`
+	Options        []DealOption `json:"options,omitempty"` // For set/enum field types
+	AddVisibleFlag bool         `json:"add_visible_flag,omitempty"`
 }

@@ -21,7 +21,6 @@ type PersonsRequest struct {
 	VisibleTo    int                    `json:"visible_to,omitempty"`
 	AddTime      string                 `json:"add_time,omitempty"`
 	CustomFields map[string]interface{} `json:"custom_fields,omitempty"`
-	Label        int                    `json:"label,omitempty"`
 	LabelIDs     []int                  `json:"label_ids,omitempty"`
 }
 
