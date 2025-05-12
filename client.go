@@ -119,8 +119,19 @@ func (c *Client) SendWithAccessToken(req *http.Request, v interface{}) error {
 	if resp.StatusCode < 200 || resp.StatusCode > 299 {
 		data, err = io.ReadAll(resp.Body)
 		fmt.Println(string(data))
+
+		var payload map[string]interface{}
+		if err2 := json.Unmarshal(data, &payload); err2 == nil {
+			if ad, ok := payload["additional_data"].(map[string]interface{}); ok {
+				if code, ok := ad["code"].(string); ok && code == "CHANNEL_ALREADY_EXISTS" {
+					return errors.New("CHANNEL_ALREADY_EXISTS")
+				}
+			}
+		}
+
 		return errors.New(string(data))
 	}
+
 	if v == nil {
 		return nil
 	}
